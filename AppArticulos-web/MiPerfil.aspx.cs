@@ -27,7 +27,7 @@ namespace AppArticulos_web
                         txtApellido.Text = user.Apellido;
                         if (!string.IsNullOrEmpty(user.ImagenPerfil))
                         {
-                            imgNuevoPerfil.ImageUrl = "~/Images/" + user.ImagenPerfil;
+                            imgNuevoPerfil.ImageUrl = "~/Images/" + user.ImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
                         }
                     }
                 }
@@ -67,7 +67,7 @@ namespace AppArticulos_web
 
                 //Leer img
                 Image img = (Image)Master.FindControl("imgAvatar");
-                img.ImageUrl = "~/Images/" + user.ImagenPerfil;
+                img.ImageUrl = "~/Images/" + user.ImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
 
             }
             catch (Exception ex)
@@ -76,5 +76,6 @@ namespace AppArticulos_web
                 Response.Redirect("Error.aspx");
             }
         }
+      
     }
 }

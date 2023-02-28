@@ -10,26 +10,22 @@ namespace negocio
     public class ArticuloFavoritoNegocio
     {
 
-        public List<ArticuloFavorito> listarFavoritos(string id = "")
+        public List<ArticuloFavorito> listarFavUserId(int idUser)
         {
-            List<ArticuloFavorito> lista = new List<ArticuloFavorito>();
             AccesoDatos datos = new AccesoDatos();
+            List<ArticuloFavorito> lista = new List<ArticuloFavorito>();
 
             try
             {
-                string consulta = "Select A.Id, IdUser, IdArticulo from FAVORITOS, ARTICULOS A where A.Id = " + id;
-                datos.setearConsulta(consulta);                
+                datos.setearConsulta("Select IdArticulo from FAVORITOS where IdUser = @idUser");
+                datos.setearParametro("@idUser", idUser);
                 datos.ejecutarLectura();
                 while (datos.Lector.Read())
-                {
-                    ArticuloFavorito aux = new ArticuloFavorito();
-                    aux.Id = (int)datos.Lector["Id"];
-                    aux.IdUser = (int)datos.Lector["IdUser"];
-                    aux.IdArticulo = (int)datos.Lector["IdUser"];
-
-                    lista.Add(aux);
+                {                    
+                    int aux = (int)datos.Lector["idArticulo"];                     
                 }
 
+                datos.cerrarConexion();
                 return lista;
             }
             catch (Exception ex)
@@ -63,13 +59,14 @@ namespace negocio
 
         }        
 
-            public void eliminarFavorito(int id)
+            public void eliminarFavorito(int idUser, int id)
         {
             try
             {
                 AccesoDatos datos = new AccesoDatos();
-                datos.setearConsulta("delete from FAVORITOS where Id = @id");
-                datos.setearParametro("id", id);
+                datos.setearConsulta("delete from FAVORITOS where IdArticulo = @idArticulo and IdUser = @idUser");
+                datos.setearParametro("IdArticulo", id);
+                datos.setearParametro("idUser", idUser);
                 datos.ejecutarAccion();
             }
             catch (Exception ex)

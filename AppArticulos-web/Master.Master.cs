@@ -13,7 +13,20 @@ namespace AppArticulos_web
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-            imgAvatar.ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+
+            if (Seguridad.sesionActiva(Session["trainee"]))
+            {
+                Trainee user = (Trainee)Session["trainee"];
+                lblUser.Text = user.Nombre;
+                if (!string.IsNullOrEmpty(user.ImagenPerfil))
+                    imgAvatar.ImageUrl = "~/Images/" + user.ImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
+            }
+            else
+            {
+                imgAvatar.ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"; 
+            }
+                       
+            
             if (!(Page is Login || Page is Registro || Page is Error || Page is Default || Page is DetalleArticulo))
             {
                 if (!Seguridad.sesionActiva(Session["trainee"]))
@@ -23,7 +36,7 @@ namespace AppArticulos_web
                     Trainee user = (Trainee)Session["trainee"];
                     lblUser.Text = user.Nombre;
                     if (!string.IsNullOrEmpty(user.ImagenPerfil))
-                        imgAvatar.ImageUrl = "~/Images/" + user.ImagenPerfil;
+                        imgAvatar.ImageUrl = "~/Images/" + user.ImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
                 }
             }
             
