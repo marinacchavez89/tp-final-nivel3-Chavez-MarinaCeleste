@@ -5,6 +5,7 @@ using System.Security.Authentication.ExtendedProtection;
 using System.Web;
 using System.Web.UI;
 using System.Web.UI.WebControls;
+using System.Web.UI.WebControls.WebParts;
 using dominio;
 using negocio;
 
@@ -12,41 +13,65 @@ namespace AppArticulos_web
 {
     public partial class Favoritos : System.Web.UI.Page
     {
-        
+        public List<Articulo> ListaArticulo { get; set; }
         protected void Page_Load(object sender, EventArgs e)
         {
-            //string id = Request.QueryString["id"] != null ? Request.QueryString["id"].ToString() : "";
-            //if (!IsPostBack)
-            //{
-            //    ArticuloFavoritoNegocio negocio = new ArticuloFavoritoNegocio();
-            //    ArticuloFavorito nuevo = new ArticuloFavorito();
+            Trainee user = (Trainee)Session["trainee"];
+            string id = Request.QueryString["id"];
+            if (!string.IsNullOrEmpty(id) && int.TryParse(id, out int idArticulo))
+            {
+                ArticuloFavoritoNegocio negocio = new ArticuloFavoritoNegocio();
+                ArticuloFavorito nuevo = new ArticuloFavorito();                
 
-            //    Trainee user = (Trainee)Session["trainee"];
+                nuevo.IdUser = user.Id;
+                nuevo.IdArticulo = int.Parse(id);
 
-            //    nuevo.IdUser = user.Id;
-            //    nuevo.IdArticulo = int.Parse(id);
+                negocio.insertarNuevoFavorito(nuevo);
+            }
+                ListaArticulo = new List<Articulo>();
 
-            //    negocio.insertarNuevoFavorito(nuevo);
+            if (user != null)
+            {
+                ArticuloFavoritoNegocio negocioart = new ArticuloFavoritoNegocio();
+                List<int> idArticulosFavoritos = negocioart.listarFavUserId(user.Id);
+                if (idArticulosFavoritos.Count > 0)
+                {
+                    ArticuloNegocio art = new ArticuloNegocio();
+                    ListaArticulo = art.listarArtById(idArticulosFavoritos);
+                    repRepetidor.DataSource = ListaArticulo;
+                    repRepetidor.DataBind();
+                }              
 
-            //    Session.Add("listaArticulosFavoritos", negocio.listarFavoritos());
-            //    dgvArticulos.DataSource = Session["listaArticulosFavoritos"];
-            //    dgvArticulos.DataBind();
-
-            //}
-
+                
+            }
+            else
+            {
+                Session.Add("error", "No se han podido cargar los articulos favoritos 😕");
+                Response.Redirect("Error.aspx");
+            }
         }
 
-        protected void dgvArticulos_SelectedIndexChanged(object sender, EventArgs e)
+        protected void btnEliminarFav_Click(object sender, EventArgs e)
         {
-            string id = dgvArticulos.SelectedDataKey.Value.ToString();
-            Response.Redirect("Favoritos.aspx?id=" + id);
+            Trainee user = (Trainee)Session["trainee"];
+            ArticuloFavoritoNegocio negocio = new ArticuloFavoritoNegocio();
+
+            // Obtener el IdArticuloFav del botón que se hizo click
+            Button btn = (Button)sender;
+            int id = int.Parse(btn.CommandArgument);
+
+            // Obtener el IdUser del usuario logueado
+            int idUser = int.Parse(Session["UserId"].ToString());
+
+            // Eliminar el registro de la tabla FAVORITOS, solo si pertenece al usuario logueado
+            negocio.eliminarFavorito(id, idUser);
+            //negocio.eliminarFav(id);
+
+            //actualizar la pagina: 
+            Page_Load(sender, e);
+
         }
 
-        protected void dgvArticulos_PageIndexChanging(object sender, GridViewPageEventArgs e)
-        {
-            dgvArticulos.DataSource = Session["listaArticulosFavoritos"];
-            dgvArticulos.PageIndex = e.NewPageIndex;
-            dgvArticulos.DataBind();
-        }
     }
 }
+

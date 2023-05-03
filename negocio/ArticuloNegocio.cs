@@ -103,6 +103,48 @@ namespace negocio
             }
         }
 
+        public List<Articulo> listarArtById(List<int> listaArtId)
+        {
+            List<Articulo> lista = new List<Articulo>();
+            AccesoDatos datos = new AccesoDatos();
+            try
+            {
+                string consulta = "SELECT A.Id, Codigo, Nombre, A.Descripcion, M.Descripcion TipoMarca, " +
+                    "C.Descripcion TipoCategoria, ImagenUrl, A.Precio, A.IdMarca, A.IdCategoria " +
+                    "FROM ARTICULOS A, CATEGORIAS C, MARCAS M " +
+                    "WHERE C.Id = A.IdCategoria AND A.IdCategoria = M.Id AND A.Id IN (" + string.Join(",", listaArtId) + ")";
+                datos.setearConsulta(consulta);
+
+                datos.ejecutarLectura();
+                while (datos.Lector.Read())
+                {
+                    Articulo aux = new Articulo();
+                    aux.Id = (int)datos.Lector["Id"];
+                    aux.Codigo = (string)datos.Lector["Codigo"];
+                    aux.Nombre = (string)datos.Lector["Nombre"];
+                    if (!(datos.Lector["Descripcion"] is DBNull))
+                        aux.Descripcion = (string)datos.Lector["Descripcion"];
+                    aux.TipoMarca = new Marca();
+                    aux.TipoMarca.Id = (int)datos.Lector["IdMarca"];
+                    aux.TipoMarca.Descripcion = (string)datos.Lector["TipoMarca"];
+                    aux.TipoCategoria = new Categoria();
+                    aux.TipoCategoria.Id = (int)datos.Lector["IdCategoria"];
+                    aux.TipoCategoria.Descripcion = (string)datos.Lector["TipoCategoria"];
+                    if (!(datos.Lector["ImagenUrl"] is DBNull))
+                        aux.ImagenUrl = (string)datos.Lector["ImagenUrl"];
+                    aux.Precio = (decimal)datos.Lector["Precio"];
+
+                    lista.Add(aux);
+                }
+
+                return lista;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public void agregar(Articulo nuevo)
         {
             AccesoDatos datos = new AccesoDatos();
@@ -314,5 +356,7 @@ namespace negocio
                 throw ex;
             }
         }
+
+
     }
 }

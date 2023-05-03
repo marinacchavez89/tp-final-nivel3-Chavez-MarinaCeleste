@@ -11,7 +11,7 @@ namespace AppArticulos_web
 {
     public partial class Default : System.Web.UI.Page
     {
-        public List<Articulo> ListaArticulo { get; set; }       
+        public List<Articulo> ListaArticulo { get; set; }      
 
         
         protected void Page_Load(object sender, EventArgs e)
