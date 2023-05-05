@@ -57,14 +57,17 @@ namespace AppArticulos_web
             ArticuloFavoritoNegocio negocio = new ArticuloFavoritoNegocio();
 
             // Obtener el IdArticuloFav del botón que se hizo click
-            Button btn = (Button)sender;
-            int id = int.Parse(btn.CommandArgument);
+            //Button btn = (Button)sender;
+            //int id = int.Parse(btn.CommandArgument);
+
+            int idArticulo = int.Parse(((Button)sender).CommandArgument);
 
             // Obtener el IdUser del usuario logueado
-            int idUser = int.Parse(Session["UserId"].ToString());
+            //int idUser = int.Parse(Session["UserId"].ToString());
+            int idUser = user.Id;
 
             // Eliminar el registro de la tabla FAVORITOS, solo si pertenece al usuario logueado
-            negocio.eliminarFavorito(id, idUser);
+            negocio.eliminarFavorito(idArticulo, idUser);
             //negocio.eliminarFav(id);
 
             //actualizar la pagina: 

@@ -79,13 +79,13 @@ namespace negocio
                 datos.cerrarConexion();
             }
         }
-        public void eliminarFavorito(int id, int idUser)
+        public void eliminarFavorito(int idArticulo, int idUser)
         {
             try
             {
                 AccesoDatos datos = new AccesoDatos();
-                datos.setearConsulta("delete from FAVORITOS where Id = @id and IdUser = @idUser");
-                datos.setearParametro("@id", id);
+                datos.setearConsulta("DELETE FROM FAVORITOS WHERE IdArticulo = @idArticulo AND IdUser = @idUser");
+                datos.setearParametro("@idArticulo", idArticulo);
                 datos.setearParametro("@idUser", idUser);
                 datos.ejecutarAccion();
             }

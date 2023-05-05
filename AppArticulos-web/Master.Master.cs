@@ -19,7 +19,14 @@ namespace AppArticulos_web
                 Trainee user = (Trainee)Session["trainee"];
                 lblUser.Text = user.Nombre;
                 if (!string.IsNullOrEmpty(user.ImagenPerfil))
+                {
                     imgAvatar.ImageUrl = "~/Images/" + user.ImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
+                }
+                else
+                {
+                    imgAvatar.ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+                }
+                    
             }
             else
             {
@@ -36,10 +43,15 @@ namespace AppArticulos_web
                     Trainee user = (Trainee)Session["trainee"];
                     lblUser.Text = user.Nombre;
                     if (!string.IsNullOrEmpty(user.ImagenPerfil))
+                    {
                         imgAvatar.ImageUrl = "~/Images/" + user.ImagenPerfil + "?v=" + DateTime.Now.Ticks.ToString();
+                    }
+                    else
+                    {
+                        imgAvatar.ImageUrl = "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png";
+                    }
                 }
-            }
-            
+            }            
         }
 
         protected void btnSalir_Click(object sender, EventArgs e)
