@@ -1,0 +1,6 @@
+C:\Users\Usuario\Desktop\Curso C# Nivel 3\Articulos-web\dominio\bin\Release\dominio.dll
+C:\Users\Usuario\Desktop\Curso C# Nivel 3\Articulos-web\dominio\bin\Release\dominio.pdb
+C:\Users\Usuario\Desktop\Curso C# Nivel 3\Articulos-web\dominio\obj\Release\dominio.csproj.AssemblyReference.cache
+C:\Users\Usuario\Desktop\Curso C# Nivel 3\Articulos-web\dominio\obj\Release\dominio.csproj.CoreCompileInputs.cache
+C:\Users\Usuario\Desktop\Curso C# Nivel 3\Articulos-web\dominio\obj\Release\dominio.dll
+C:\Users\Usuario\Desktop\Curso C# Nivel 3\Articulos-web\dominio\obj\Release\dominio.pdb
